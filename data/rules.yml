@@ -1,0 +1,47 @@
+version: "2.0"
+rules:
+
+  - rule: Submit form
+    condition:
+    # Condition that form is active.
+    - active_loop: nhtsa_form
+    steps:
+    - action: nhtsa_form
+    - active_loop: null
+    # The action we want to run when the form is submitted.
+    - action: action_submit_results
+    - slot_was_set:
+      - MoreDataAvailable: true
+    - action: utter_ask_more
+    - intent: affirm
+    - action: action_more_results
+  
+  - rule: Greeting
+    steps:
+    - intent: greet
+    - action: utter_greet
+    - action: utter_menu
+  
+  - rule: Goodbye
+    steps:
+    - intent: goodbye
+    - action: utter_goodbye
+    - action: action_reset_allslots
+  
+  - rule: Thanks
+    steps:
+    - intent: thankyou
+    - action: utter_no_worries
+    - action: action_reset_allslots
+    - action: utter_menu    
+  
+  - rule: Bot challenge
+    steps:
+    - intent: bot_challenge
+    - action: utter_iamabot
+  
+  - rule: provide info about bot functionalities
+    steps:
+    - intent: functionalities
+    - action: utter_functionality
+

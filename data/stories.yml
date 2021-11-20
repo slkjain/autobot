@@ -1,0 +1,191 @@
+version: "2.0"
+stories:
+
+- story: no query
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - action: utter_menu
+  - intent: deny
+  - action: utter_goodbye
+  - action: action_reset_allslots 
+  
+- story: describe NHTSA
+  steps:
+  - intent: whatsnhtsa
+  - action: utter_nhtsa
+  - intent: affirm
+  - action: utter_menu
+
+- story: interactive_story_1
+  steps:
+  - intent: out_of_scope
+  - action: utter_ask_continue
+  - intent: affirm
+  - action: utter_menu
+
+- story: interactive_story_2
+  steps:
+  - intent: showcomplaints
+    entities:
+    - ModelYear: '2010'
+    - Make: honda
+    - Model: altima
+  - slot_was_set:
+    - ModelYear: '2010'
+  - slot_was_set:
+    - Make: honda
+  - slot_was_set:
+    - Model: altima
+  - action: utter_dont_mind
+  - action: nhtsa_form
+  - active_loop: nhtsa_form
+  - slot_was_set:
+    - Make: honda
+  - slot_was_set:
+    - Model: altima
+  - slot_was_set:
+    - ModelYear: '2010'
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_submit_results
+  - slot_was_set:
+    - MoreDataAvailable: false
+  - action: action_reset_allslots 
+
+- story: interactive_story_3
+  steps:
+  - intent: showcomplaints
+    entities:
+    - ModelYear: '2010'
+    - Make: honda
+    - Model: accord
+  - slot_was_set:
+    - ModelYear: '2010'
+  - slot_was_set:
+    - Make: honda
+  - slot_was_set:
+    - Model: accord
+  - action: utter_dont_mind
+  - action: nhtsa_form
+  - active_loop: nhtsa_form
+  - slot_was_set:
+    - Make: honda
+  - slot_was_set:
+    - Model: accord
+  - slot_was_set:
+    - ModelYear: '2010'
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_submit_results
+  - slot_was_set:
+    - MoreDataAvailable: true
+  - action: utter_ask_more
+  - intent: affirm
+  - action: action_more_results
+
+- story: interactive_story_4
+  steps:
+  - intent: functionalities
+  - action: utter_functionality
+  - intent: showcomplaints
+  - action: nhtsa_form
+  - active_loop: nhtsa_form
+  - slot_was_set:
+    - requested_slot: ModelYear
+  - slot_was_set:
+    - ModelYear: '2017'
+  - slot_was_set:
+    - ModelYear: '2017'
+  - slot_was_set:
+    - requested_slot: Make
+  - slot_was_set:
+    - Make: nissan
+  - slot_was_set:
+    - Make: NISSAN
+  - slot_was_set:
+    - requested_slot: Model
+  - slot_was_set:
+    - Model: altima
+  - slot_was_set:
+    - Model: ALTIMA
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_submit_results
+  - slot_was_set:
+    - MoreDataAvailable: true
+  - action: utter_ask_more
+  - intent: affirm
+  - action: action_more_results
+
+- story: interactive_story_5
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - action: utter_menu
+  - intent: affirm
+  - action: nhtsa_form
+  - active_loop: nhtsa_form
+  - slot_was_set:
+    - requested_slot: ModelYear
+  - slot_was_set:
+    - ModelYear: '2017'
+  - slot_was_set:
+    - ModelYear: '2017'
+  - slot_was_set:
+    - requested_slot: Make
+  - slot_was_set:
+    - Make: MAZDA
+  - slot_was_set:
+    - requested_slot: Model
+  - slot_was_set:
+    - Model: cx-3
+  - slot_was_set:
+    - Model: CX-3
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_submit_results
+  - slot_was_set:
+    - MoreDataAvailable: true
+  - action: utter_ask_more
+  - intent: affirm
+  - action: action_more_results
+
+- story: interactive_story_6
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - action: utter_menu
+  - intent: affirm
+  - action: nhtsa_form
+  - active_loop: nhtsa_form
+  - slot_was_set:
+    - requested_slot: ModelYear
+  - slot_was_set:
+    - ModelYear: '2017'
+  - slot_was_set:
+    - ModelYear: '2017'
+  - slot_was_set:
+    - requested_slot: Make
+  - slot_was_set:
+    - Make: MAZDA
+  - slot_was_set:
+    - requested_slot: Model
+  - slot_was_set:
+    - Model: cx-3
+  - slot_was_set:
+    - Model: CX-3
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_submit_results
+  - slot_was_set:
+    - MoreDataAvailable: true
+  - action: utter_ask_more
+  - intent: deny
+  - action: action_reset_allslots
+
