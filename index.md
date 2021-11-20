@@ -12,31 +12,31 @@ The bot can provide information about a vehicle's complaints and recalls. You ca
 # Showing complaints data
 Webchat interface of Autobot is part of 'index.html'. Open 'index.html' in a web-browser.
 
-<img src="/img/Chatbot_Interface1.JPG" alt="Chatbot Initial Screen" width="600"/>
+<img src="https://slkjain.github.io/autobot/img/Chatbot_Interface1.JPG" alt="Chatbot Initial Screen" width="600"/>
 
 Click on the chat icon at the bottom-left corner of the screen. It will open the chat window.
 
-<img src="/img/Chatbot_Interface2.JPG" alt="Chatbot Welcome Screen" width="600"/>
+<img src="https://slkjain.github.io/autobot/img/Chatbot_Interface2.JPG" alt="Chatbot Welcome Screen" width="600"/>
 
 The initial chat window shows possible chatbot services. The user can either directly click on an option or type their question as English text. If the text is typed, then it need not exactly match with the option text. The RASA NLU engine can map the user-typed text to an appropriate service of the chatbot. For example, if the user asks, "show me some vehicle complaints" then the NLU engine will map the user intent to "Show complaints data".
 
-<img src="/img/Show_Complaints1.JPG" alt="Show me some vehicle complaints" width="200"/>
+<img src="https://slkjain.github.io/autobot/img/Show_Complaints1.JPG" alt="Show me some vehicle complaints" width="200"/>
 
 Based on this intent, Autobot will ask for relevant information such as model year to retrieve the complaints data.
 
-<img src="/img/Ask_MY1.JPG" alt="Provide model year" width="200"/>
+<img src="https://slkjain.github.io/autobot/img/Ask_MY1.JPG" alt="Provide model year" width="200"/>
 
 Say the user types the Model Year as 2018 then Autobot will present the list of all the Makes available in the NHTSA database for the model year 2018. 
 
-<img src="/img/Ask_Make1.JPG" alt="Provide make" width="200"/>
+<img src="https://slkjain.github.io/autobot/img/Ask_Make1.JPG" alt="Provide make" width="200"/>
 
 The user can either select a make option from the presented makes or the user can type it as well. Here, the user typed 'nissan'.
 
-<img src="/img/Ask_Model1.JPG" alt="Provide model" width="200"/>
+<img src="https://slkjain.github.io/autobot/img/Ask_Model1.JPG" alt="Provide model" width="200"/>
 
 Again, the user can either select an option or type manually. Selecting model as 'Altima' here shows following details -
 
-<img src="/img/Show_Summary1.JPG" alt="Show summary" width="200"/>
+<img src="https://slkjain.github.io/autobot/img/Show_Summary1.JPG" alt="Show summary" width="200"/>
 
 For 2018 Nissan Altima, there exist 139 complaints and 2 recalls in NHTSA database. All of these details are queried at run time using [NHTSA Public APIs](https://medium.com/@slkjain/exploring-public-apis-from-nhtsa-81cb7416e0fc).
 
@@ -70,10 +70,10 @@ At this stage if the user wants to see more details, they can select YES. Once t
 
 At the juncture, once the user thanks Autobot, it goes back to presenting initial options again. 
 
-<img src="/img/Show_NoProblem1.JPG" alt="Acknowledge" width="200"/>
+<img src="https://slkjain.github.io/autobot/img/Show_NoProblem1.JPG" alt="Acknowledge" width="200"/>
 
 Here is a recorded session with Autobot -
 
-<img src="/img/autobot1.gif" alt="Recorded session with Autobot" width="200"/>
+<img src="https://slkjain.github.io/autobot/img/autobot1.gif" alt="Recorded session with Autobot" width="200"/>
 
 Additionally, Autobot is capable of responding to weird "out-of-scope" questions thrown at it as well. The code for building Autobot is available in [Autobot Github Repository](https://github.com/slkjain/autobot).
