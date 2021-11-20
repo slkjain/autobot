@@ -1,0 +1,102 @@
+version: '2.0'
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: false
+intents:
+- greet
+- next
+- inform
+- affirm
+- showcomplaints
+- functionalities
+- out_of_scope
+- goodbye
+- deny
+- bot_challenge
+- thankyou
+- whatsnhtsa
+entities:
+- Make
+- Model
+- ModelYear
+slots:
+  Make:
+    type: any
+    influence_conversation: false
+  ModelYear:
+    type: any
+    influence_conversation: false
+  Model:
+    type: any
+    influence_conversation: false
+  MoreDataAvailable:
+    type: bool
+    influence_conversation: true
+responses:
+  utter_greet:
+  - text: |-
+      Hi! I am Autobot. I can answer your question regarding complaints filed with NHTSA. 
+  utter_menu:
+  - text: |-
+      What do you want to do next?
+    buttons:
+    - title: Show complaints data
+      payload: /showcomplaints
+    - title: What is NHTSA
+      payload: /whatsnhtsa  
+    - title: Not interested at this time
+      payload: /deny
+  utter_goodbye:
+  - text: Bye for now!
+  utter_iamabot:
+  - text: I am a bot, powered by Rasa.
+  utter_ask_ModelYear:
+  - text: Please specify the model year of the vehicle (e.g. 2017):
+  utter_no_worries:
+  - text: No problem :)
+  utter_ask_continue:
+  - text: Sorry, I don't quite understand. Do you want to continue?
+    buttons:
+    - title: Yes
+      payload: /affirm
+    - title: No
+      payload: /deny
+  utter_functionality:
+  - text: |-
+      You can ask me questions like:
+       - What is NHTSA?
+       - Tell me about some safety issues reported to NHTSA
+  utter_ask_more:
+  - text: Do you want to see more details?
+    buttons:
+    - title: Yes
+      payload: /affirm
+    - title: No
+      payload: /deny
+  utter_dont_mind:
+  - text: Please don't mind in case I ask for some more information.
+  utter_nhtsa:
+  - text: NHTSA (National Highway Traffic Safety Administration) is a federal agency committed to transportation safety in the United States. All the Automotive OEMs need to report all their consumer complaints, recalls and recall status to NHTSA as part of Early Warning Reporting.  General public can also report safety defects directly to NHTSA.
+actions:
+- action_more_results
+- action_reset_allslots
+- action_submit_results
+- utter_ask_continue
+- utter_ask_more
+- utter_functionality
+- utter_greet
+- utter_menu
+- utter_nhtsa
+- validate_nhtsa_form
+
+forms:
+  nhtsa_form:
+    ModelYear:
+    - entity: ModelYear
+      type: from_text
+    Make:
+    - entity: Make
+      type: from_text
+    Model:
+    - entity: Model
+      type: from_text
