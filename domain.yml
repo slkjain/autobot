@@ -51,7 +51,7 @@ responses:
   utter_iamabot:
   - text: I am a bot, powered by Rasa.
   utter_ask_ModelYear:
-  - text: Please specify the model year of the vehicle (e.g. 2017):
+  - text: Please specify the model year of the vehicle (e.g. 2017)
   utter_no_worries:
   - text: No problem :)
   utter_ask_continue:
