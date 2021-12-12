@@ -17,65 +17,39 @@ stories:
   - intent: affirm
   - action: utter_menu
 
-- story: interactive_story_1
+- story: out of scope
   steps:
   - intent: out_of_scope
   - action: utter_ask_continue
   - intent: affirm
   - action: utter_menu
 
-- story: interactive_story_2
+- story: interactive_story_1
   steps:
+  - intent: functionalities
+  - action: utter_functionality
   - intent: showcomplaints
-    entities:
-    - ModelYear: '2010'
-    - Make: honda
-    - Model: altima
-  - slot_was_set:
-    - ModelYear: '2010'
-  - slot_was_set:
-    - Make: honda
-  - slot_was_set:
-    - Model: altima
-  - action: utter_dont_mind
+  - action: action_set_infotype_complaints
   - action: nhtsa_form
   - active_loop: nhtsa_form
   - slot_was_set:
-    - Make: honda
+    - requested_slot: ModelYear
+  - slot_was_set:
+    - ModelYear: '2017'
+  - slot_was_set:
+    - ModelYear: '2017'
+  - slot_was_set:
+    - requested_slot: Make
+  - slot_was_set:
+    - Make: nissan
+  - slot_was_set:
+    - Make: NISSAN
+  - slot_was_set:
+    - requested_slot: Model
   - slot_was_set:
     - Model: altima
   - slot_was_set:
-    - ModelYear: '2010'
-  - slot_was_set:
-    - requested_slot: null
-  - active_loop: null
-  - action: action_submit_results
-  - slot_was_set:
-    - MoreDataAvailable: false
-  - action: action_reset_allslots 
-
-- story: interactive_story_3
-  steps:
-  - intent: showcomplaints
-    entities:
-    - ModelYear: '2010'
-    - Make: honda
-    - Model: accord
-  - slot_was_set:
-    - ModelYear: '2010'
-  - slot_was_set:
-    - Make: honda
-  - slot_was_set:
-    - Model: accord
-  - action: utter_dont_mind
-  - action: nhtsa_form
-  - active_loop: nhtsa_form
-  - slot_was_set:
-    - Make: honda
-  - slot_was_set:
-    - Model: accord
-  - slot_was_set:
-    - ModelYear: '2010'
+    - Model: ALTIMA
   - slot_was_set:
     - requested_slot: null
   - active_loop: null
@@ -86,11 +60,86 @@ stories:
   - intent: affirm
   - action: action_more_results
 
+- story: interactive_story_2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - action: utter_menu
+  - intent: showcomplaints
+  - action: action_set_infotype_complaints
+  - action: nhtsa_form
+  - active_loop: nhtsa_form
+  - slot_was_set:
+    - requested_slot: ModelYear
+  - slot_was_set:
+    - ModelYear: '2017'
+  - slot_was_set:
+    - ModelYear: '2017'
+  - slot_was_set:
+    - requested_slot: Make
+  - slot_was_set:
+    - Make: MAZDA
+  - slot_was_set:
+    - requested_slot: Model
+  - slot_was_set:
+    - Model: cx-3
+  - slot_was_set:
+    - Model: CX-3
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_submit_results
+  - slot_was_set:
+    - MoreDataAvailable: true
+  - action: utter_ask_more
+  - intent: affirm
+  - action: action_more_results
+
+- story: interactive_story_3
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - action: utter_menu
+  - intent: showcomplaints
+  - action: action_set_infotype_complaints
+  - action: nhtsa_form
+  - active_loop: nhtsa_form
+  - slot_was_set:
+    - requested_slot: ModelYear
+  - slot_was_set:
+    - ModelYear: '2017'
+  - slot_was_set:
+    - ModelYear: '2017'
+  - slot_was_set:
+    - requested_slot: Make
+  - slot_was_set:
+    - Make: MAZDA
+  - slot_was_set:
+    - requested_slot: Model
+  - slot_was_set:
+    - Model: cx-3
+  - slot_was_set:
+    - Model: CX-3
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_submit_results
+  - slot_was_set:
+    - MoreDataAvailable: true
+  - action: utter_ask_more
+  - intent: deny
+  - action: action_reset_allslots
+
 - story: interactive_story_4
   steps:
-  - intent: functionalities
-  - action: utter_functionality
-  - intent: showcomplaints
+  - intent: greet
+  - action: utter_greet
+  - action: utter_menu
+  - intent: showrecalls
+    entities:
+    - InfoType: recalls
+  - slot_was_set:
+    - InfoType: recalls
   - action: nhtsa_form
   - active_loop: nhtsa_form
   - slot_was_set:
@@ -126,7 +175,11 @@ stories:
   - intent: greet
   - action: utter_greet
   - action: utter_menu
-  - intent: affirm
+  - intent: showrecalls
+    entities:
+    - InfoType: recalls
+  - slot_was_set:
+    - InfoType: recalls
   - action: nhtsa_form
   - active_loop: nhtsa_form
   - slot_was_set:
@@ -138,47 +191,15 @@ stories:
   - slot_was_set:
     - requested_slot: Make
   - slot_was_set:
-    - Make: MAZDA
+    - Make: nissan
+  - slot_was_set:
+    - Make: NISSAN
   - slot_was_set:
     - requested_slot: Model
   - slot_was_set:
-    - Model: cx-3
+    - Model: altima
   - slot_was_set:
-    - Model: CX-3
-  - slot_was_set:
-    - requested_slot: null
-  - active_loop: null
-  - action: action_submit_results
-  - slot_was_set:
-    - MoreDataAvailable: true
-  - action: utter_ask_more
-  - intent: affirm
-  - action: action_more_results
-
-- story: interactive_story_6
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - action: utter_menu
-  - intent: affirm
-  - action: nhtsa_form
-  - active_loop: nhtsa_form
-  - slot_was_set:
-    - requested_slot: ModelYear
-  - slot_was_set:
-    - ModelYear: '2017'
-  - slot_was_set:
-    - ModelYear: '2017'
-  - slot_was_set:
-    - requested_slot: Make
-  - slot_was_set:
-    - Make: MAZDA
-  - slot_was_set:
-    - requested_slot: Model
-  - slot_was_set:
-    - Model: cx-3
-  - slot_was_set:
-    - Model: CX-3
+    - Model: ALTIMA
   - slot_was_set:
     - requested_slot: null
   - active_loop: null
@@ -189,3 +210,332 @@ stories:
   - intent: deny
   - action: action_reset_allslots
 
+- story: interactive_story_6
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - action: utter_menu
+  - intent: showrecalls
+    entities:
+    - InfoType: recalls
+  - slot_was_set:
+    - InfoType: recalls
+  - action: nhtsa_form
+  - active_loop: nhtsa_form
+  - slot_was_set:
+    - requested_slot: ModelYear
+  - slot_was_set:
+    - ModelYear: '2017'
+  - slot_was_set:
+    - ModelYear: '2017'
+  - slot_was_set:
+    - requested_slot: Make
+  - slot_was_set:
+    - Make: nissan
+  - slot_was_set:
+    - Make: NISSAN
+  - slot_was_set:
+    - requested_slot: Model
+  - slot_was_set:
+    - Model: altima
+  - slot_was_set:
+    - Model: ALTIMA
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_submit_results
+  - slot_was_set:
+    - MoreDataAvailable: false
+  - action: action_reset_allslots 
+  
+- story: interactive_story_7
+  steps:
+  - intent: showrecalls
+  - action: action_set_infotype_recalls
+  - slot_was_set:
+    - InfoType: recalls
+  - action: nhtsa_form
+  - active_loop: nhtsa_form
+  - slot_was_set:
+    - requested_slot: ModelYear
+  - slot_was_set:
+    - ModelYear: '2015'
+  - slot_was_set:
+    - ModelYear: '2015'
+  - slot_was_set:
+    - requested_slot: Make
+  - slot_was_set:
+    - Make: TOYOTA
+  - slot_was_set:
+    - Make: TOYOTA
+  - slot_was_set:
+    - requested_slot: Model
+  - slot_was_set:
+    - Model: COROLLA
+  - slot_was_set:
+    - Model: COROLLA
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_submit_results
+  - slot_was_set:
+    - MoreDataAvailable: true
+  - action: utter_ask_more
+  - intent: affirm
+  - action: action_more_results
+
+- story: interactive_story_8
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - action: utter_menu
+  - intent: showsafetyratings
+    entities:
+    - InfoType: ratings
+  - slot_was_set:
+    - InfoType: ratings
+  - action: nhtsa_form
+  - active_loop: nhtsa_form
+  - slot_was_set:
+    - requested_slot: ModelYear
+  - slot_was_set:
+    - ModelYear: '2017'
+  - slot_was_set:
+    - ModelYear: '2017'
+  - slot_was_set:
+    - requested_slot: Make
+  - slot_was_set:
+    - Make: nissan
+  - slot_was_set:
+    - Make: NISSAN
+  - slot_was_set:
+    - requested_slot: Model
+  - slot_was_set:
+    - Model: altima
+  - slot_was_set:
+    - Model: ALTIMA
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_submit_results
+  - slot_was_set:
+    - MoreDataAvailable: true
+  - action: utter_ask_more
+  - intent: affirm
+  - action: action_more_results
+
+- story: interactive_story_9
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - action: utter_menu
+  - intent: showsafetyratings
+    entities:
+    - InfoType: ratings
+  - slot_was_set:
+    - InfoType: ratings
+  - action: nhtsa_form
+  - active_loop: nhtsa_form
+  - slot_was_set:
+    - requested_slot: ModelYear
+  - slot_was_set:
+    - ModelYear: '2017'
+  - slot_was_set:
+    - ModelYear: '2017'
+  - slot_was_set:
+    - requested_slot: Make
+  - slot_was_set:
+    - Make: nissan
+  - slot_was_set:
+    - Make: NISSAN
+  - slot_was_set:
+    - requested_slot: Model
+  - slot_was_set:
+    - Model: altima
+  - slot_was_set:
+    - Model: ALTIMA
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_submit_results
+  - slot_was_set:
+    - MoreDataAvailable: true
+  - action: utter_ask_more
+  - intent: deny
+  - action: action_reset_allslots
+
+- story: interactive_story_10
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - action: utter_menu
+  - intent: showsafetyratings
+    entities:
+    - InfoType: ratings
+  - slot_was_set:
+    - InfoType: ratings
+  - action: nhtsa_form
+  - active_loop: nhtsa_form
+  - slot_was_set:
+    - requested_slot: ModelYear
+  - slot_was_set:
+    - ModelYear: '2017'
+  - slot_was_set:
+    - ModelYear: '2017'
+  - slot_was_set:
+    - requested_slot: Make
+  - slot_was_set:
+    - Make: nissan
+  - slot_was_set:
+    - Make: NISSAN
+  - slot_was_set:
+    - requested_slot: Model
+  - slot_was_set:
+    - Model: altima
+  - slot_was_set:
+    - Model: ALTIMA
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_submit_results
+  - slot_was_set:
+    - MoreDataAvailable: false
+  - action: action_reset_allslots 
+  
+- story: interactive_story_11
+  steps:
+  - intent: showsafetyratings
+  - action: action_set_infotype_ratings
+  - slot_was_set:
+    - InfoType: ratings
+  - action: nhtsa_form
+  - active_loop: nhtsa_form
+  - slot_was_set:
+    - requested_slot: ModelYear
+  - slot_was_set:
+    - ModelYear: '2015'
+  - slot_was_set:
+    - ModelYear: '2015'
+  - slot_was_set:
+    - requested_slot: Make
+  - slot_was_set:
+    - Make: TOYOTA
+  - slot_was_set:
+    - Make: TOYOTA
+  - slot_was_set:
+    - requested_slot: Model
+  - slot_was_set:
+    - Model: COROLLA
+  - slot_was_set:
+    - Model: COROLLA
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_submit_results
+  - slot_was_set:
+    - MoreDataAvailable: true
+  - action: utter_ask_more
+  - intent: affirm
+  - action: action_more_results
+
+- story: interactive_story_12
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - action: utter_menu
+  - intent: showsafetyratings
+    entities:
+    - InfoType: ratings
+  - slot_was_set:
+    - InfoType: ratings
+  - action: nhtsa_form
+  - active_loop: nhtsa_form
+  - slot_was_set:
+    - requested_slot: ModelYear
+  - slot_was_set:
+    - ModelYear: '2022'
+  - slot_was_set:
+    - ModelYear: '2022'
+  - slot_was_set:
+    - requested_slot: Make
+  - slot_was_set:
+    - Make: LAND ROVER
+  - slot_was_set:
+    - Make: LAND ROVER
+  - slot_was_set:
+    - requested_slot: Model
+  - slot_was_set:
+    - Model: DEFENDER
+  - slot_was_set:
+    - Model: DEFENDER
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_submit_results
+  - slot_was_set:
+    - MoreDataAvailable: false
+  - action: action_reset_allslots
+
+- story: interactive_story_13
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - action: utter_menu
+  - intent: showVINdetails
+    entities:
+    - InfoType: vin
+  - slot_was_set:
+    - InfoType: vin
+  - action: vin_form
+  - active_loop: vin_form
+  - slot_was_set:
+    - requested_slot: VIN
+  - slot_was_set:
+    - VIN: 1HGCR2F35GA244457
+  - slot_was_set:
+    - VIN: 1HGCR2F35GA244457
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_vin_results
+
+- story: interactive_story_14
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - action: utter_menu
+  - intent: showVINdetails
+  - action: action_set_infotype_vin
+  - slot_was_set:
+    - InfoType: vin
+  - action: vin_form
+  - active_loop: vin_form
+  - slot_was_set:
+    - requested_slot: VIN
+  - slot_was_set:
+    - VIN: 5UXWX7C5*BA
+  - slot_was_set:
+    - VIN: 5UXWX7C5*BA
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_vin_results
+
+- story: interactive_story_15
+  steps:
+  - intent: showVINdetails
+  - action: action_set_infotype_vin
+  - slot_was_set:
+    - InfoType: vin
+  - action: vin_form
+  - active_loop: vin_form
+  - slot_was_set:
+    - requested_slot: VIN
+  - slot_was_set:
+    - VIN: 5UXWX7C5*BA
+  - slot_was_set:
+    - VIN: 5UXWX7C5*BA
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_vin_results

@@ -1,7 +1,7 @@
 version: "2.0"
 rules:
 
-  - rule: Submit form
+  - rule: Submit nhtsa form
     condition:
     # Condition that form is active.
     - active_loop: nhtsa_form
@@ -16,6 +16,16 @@ rules:
     - intent: affirm
     - action: action_more_results
   
+  - rule: Submit vin form
+    condition:
+    # Condition that form is active.
+    - active_loop: vin_form
+    steps:
+    - action: vin_form
+    - active_loop: null
+    # The action we want to run when the form is submitted.
+    - action: action_vin_results
+
   - rule: Greeting
     steps:
     - intent: greet
@@ -44,4 +54,3 @@ rules:
     steps:
     - intent: functionalities
     - action: utter_functionality
-

@@ -88,13 +88,6 @@ nlu:
     - I changed my mind
     - my name is shailendra jain
     - you fool
-- intent: showcomplaints
-  examples: |
-    - Tell me about some safety issues
-    - What are the different complaints NHTSA receive?
-    - Total how many complaints are filed with NHTSA
-    - What are some of the complaints?
-    - tell me about some safety issues
 - intent: functionalities
   examples: |
     - What can you do for me?
@@ -102,6 +95,39 @@ nlu:
     - What can you help me with?
     - What is your functionality
     - what can you do for me
+- intent: showcomplaints
+  examples: |
+    - Tell me about some complaints
+    - What are the different complaints NHTSA receive?
+    - Total how many complaints are filed with NHTSA
+    - What are some of the complaints?
+    - tell me about some vehicle issues reported to nhtsa
+- intent: showrecalls
+  examples: |
+    - Tell me about some recalls
+    - What are some of the recalls issues by NHTSA?
+    - Total how many recalls are issued by NHTSA
+    - What are some of the recalls?
+    - tell me about some vehicle recalls
+    - show me some recalls
+- intent: showsafetyratings
+  examples: |
+    - I want to see safety ratings
+    - show me some safety ratings
+    - What are the various safety ratings for my vehicle?
+    - I would like to check how safe is my vehicle
+    - What safety ratings do NHTSA provide?
+    - tell me about crash ratings
+    - how safe is my vehicle?
+    - safety ratings
+- intent: showVINdetails
+  examples: |
+    - I would like to see my VIN details
+    - Show me details for my VIN
+    - Decode my VIN please
+    - Show VIN details
+    - Show my VIN details
+    - decode vin
 - intent: whatsnhtsa
   examples: |
     - What is NHTSA?
