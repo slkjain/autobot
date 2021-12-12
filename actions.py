@@ -176,13 +176,13 @@ class ActionSubmitResults(Action):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> List[Dict]:
-
+        infoType = tracker.get_slot("InfoType")
         make = tracker.get_slot("Make")
         modelyear = tracker.get_slot("ModelYear")
         model = tracker.get_slot("Model")
 
         if modelyear == None:
-            modelyear = "2019, 2020, 2021"
+            modelyear = "2019"
         
         if make == None:
             dispatcher.utter_message(f"Please re-state your query by specifying make. I can not provide info without knowing make and model.")
@@ -194,57 +194,90 @@ class ActionSubmitResults(Action):
 
         model_year = modelyear.strip() 
 
-        global complaint_count
-        global crash_count
-        global fire_count
-        global response
-        global input_error_count
+        if (infoType == "complaints"):
+            global complaint_count
+            global crash_count
+            global fire_count
+            global response
+            global input_error_count
 
-        input_error_count = 0 #reset all input errors if you have reached till here
-        complaint_count = 0
-        crash_count = 0
-        fire_count = 0
-        response = None
+            input_error_count = 0 #reset all input errors if you have reached till here
+            complaint_count = 0
+            crash_count = 0
+            fire_count = 0
+            response = None
 
-        global list_summary_crash
-        global list_summary_fire
-        list_summary_crash = []
-        list_summary_fire = []        
+            global list_summary_crash
+            global list_summary_fire
+            list_summary_crash = []
+            list_summary_fire = []        
 
-        parameters = {
-            "modelYear": model_year,
-            "make": make,
-            "model" :model
-        }
-        response = requests.get("https://api.nhtsa.gov/complaints/complaintsByVehicle", params=parameters )
-        if response.status_code == 200:
-            results = response.json()['results']
-            for result in results:
-                complaint_count += 1
-                summary = result["summary"]
-                if result["crash"]:
-                    crash_count += 1
-                    list_summary_crash.append(summary)
-                if result["fire"]:
-                    fire_count += 1
-                    list_summary_fire.append(summary)
+            parameters = {
+                "modelYear": model_year,
+                "make": make,
+                "model" :model
+            }
+            response = requests.get("https://api.nhtsa.gov/complaints/complaintsByVehicle", params=parameters )
+            if response.status_code == 200:
+                results = response.json()['results']
+                for result in results:
+                    complaint_count += 1
+                    summary = result["summary"]
+                    if result["crash"]:
+                        crash_count += 1
+                        list_summary_crash.append(summary)
+                    if result["fire"]:
+                        fire_count += 1
+                        list_summary_fire.append(summary)
 
-        dispatcher.utter_message(f"There are {complaint_count} complaint(s) in NHTSA database for {modelyear} {make} {model}.")
+            dispatcher.utter_message(f"There are {complaint_count} complaint(s) in NHTSA database for {modelyear} {make} {model}.")
 
-        global recall_count
-        global recall_response
-        recall_count = 0
-        recall_response = None
+        if (infoType == "recalls"):
+            global recall_count
+            global recall_response
+            recall_count = 0
+            recall_response = None
 
-        recall_response = requests.get(f"https://one.nhtsa.gov/webapi/api/Recalls/vehicle/modelyear/{model_year}/make/{make}/model/{model}?format=json")
-        if recall_response.status_code == 200:
-            results_recall = recall_response.json()['Results']
-            for result in results_recall:
-                recall_count += 1
+            recall_response = requests.get(f"https://one.nhtsa.gov/webapi/api/Recalls/vehicle/modelyear/{model_year}/make/{make}/model/{model}?format=json")
+            if recall_response.status_code == 200:
+                results_recall = recall_response.json()['Results']
+                for result in results_recall:
+                    recall_count += 1
 
-        dispatcher.utter_message(f"There are {recall_count} recall(s) in NHTSA database for {modelyear} {make} {model}.")
-        AllSlotsReset() 
-        if (complaint_count> 0):
+            dispatcher.utter_message(f"There are {recall_count} recall(s) in NHTSA database for {modelyear} {make} {model}.")
+
+        if (infoType == "ratings"):
+            rating_response = requests.get(f"https://api.nhtsa.gov/SafetyRatings/modelyear/{model_year}/make/{make}/model/{model}")
+            if rating_response.status_code == 200:
+                results_rating = rating_response.json()['Results']
+                if len(results_rating) != 0: 
+                    for result in results_rating:
+                        vehicleDesc = result["VehicleDescription"]
+                        vehicleId = result["VehicleId"]
+                        rating_response_for_id = requests.get(f"https://api.nhtsa.gov/SafetyRatings/VehicleId/{vehicleId}")
+                        if rating_response_for_id.status_code == 200:
+                            if (len(rating_response_for_id.json()['Results']) != 0):
+                                results_rating_for_id = rating_response_for_id.json()['Results'][0]
+                                dispatcher.utter_message(f"* Following are the ratings for {vehicleDesc}")
+                                dispatcher.utter_message(f"- OverallRating = {results_rating_for_id['OverallRating']}")
+                                dispatcher.utter_message(f"- OverallFrontCrashRating = {results_rating_for_id['OverallFrontCrashRating']}")
+                                dispatcher.utter_message(f"- FrontCrashDriversideRating = {results_rating_for_id['FrontCrashDriversideRating']}")
+                                dispatcher.utter_message(f"- FrontCrashPassengersideRating = {results_rating_for_id['FrontCrashPassengersideRating']}")
+                                dispatcher.utter_message(f"- OverallSideCrashRating = {results_rating_for_id['OverallSideCrashRating']}")
+                                dispatcher.utter_message(f"- SideCrashDriversideRating = {results_rating_for_id['SideCrashDriversideRating']}")
+                                dispatcher.utter_message(f"- SideCrashPassengersideRating = {results_rating_for_id['SideCrashPassengersideRating']}")
+                                dispatcher.utter_message(f"- RolloverRating = {results_rating_for_id['RolloverRating']}")
+                                dispatcher.utter_message(f"- RolloverPossibility = {results_rating_for_id['RolloverPossibility']}")
+                                dispatcher.utter_message(f"- RolloverRating2 = {results_rating_for_id['RolloverRating2']}")
+                                dispatcher.utter_message(f"- RolloverPossibility2 = {results_rating_for_id['RolloverPossibility2']}")
+                                dispatcher.utter_message(f"- SidePoleCrashRating = {results_rating_for_id['SidePoleCrashRating']}")
+                                dispatcher.utter_message("---")
+                            else:
+                                dispatcher.utter_message(f"Sorry. No ratings are available for {model_year} {make} {model}")
+                else:
+                    dispatcher.utter_message(f"Sorry. No ratings are available for {model_year} {make} {model}")
+
+        if (infoType == "complaints" and complaint_count> 0) or (infoType == "recalls" and recall_count> 0):
             return [SlotSet("MoreDataAvailable", True)]
         else:
             return [SlotSet("MoreDataAvailable", False)]
@@ -258,81 +291,81 @@ class ActionMoreResults(Action):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> List[Dict]:
+        infoType = tracker.get_slot("InfoType")
+        if (infoType == "complaints"):
+            if (crash_count > 0):
+                dispatcher.utter_message(f"{crash_count} complaint(s) were related to crash.")
+            else:
+                dispatcher.utter_message("There were no crash related complaints.")
+            
+            if (fire_count > 0):
+                dispatcher.utter_message(f"{fire_count} complaint(s) were related to fire.")
+            else:
+                dispatcher.utter_message("There were no fire related complaints.")
 
-        if (crash_count > 0):
-            dispatcher.utter_message(f"{crash_count} complaint(s) were related to crash.")
-        else:
-            dispatcher.utter_message("There were no crash related complaints.")
-        
-        if (fire_count > 0):
-            dispatcher.utter_message(f"{fire_count} complaint(s) were related to fire.")
-        else:
-            dispatcher.utter_message("There were no fire related complaints.")
+            results = response.json()['results']
+            totalInjuries = 0
+            for result in results:
+                totalInjuries += result["numberOfInjuries"]
+            
+            if totalInjuries > 0 :
+                dispatcher.utter_message(f"Total injuries reported: {totalInjuries}")
+            else:
+                dispatcher.utter_message(f"No injuries reported.")
 
-        results = response.json()['results']
-        totalInjuries = 0
-        for result in results:
-            totalInjuries += result["numberOfInjuries"]
-        
-        if totalInjuries > 0 :
-            dispatcher.utter_message(f"Total injuries reported: {totalInjuries}")
-        else:
-            dispatcher.utter_message(f"No injuries reported.")
+            totalDeaths = 0
+            for result in results:
+                totalDeaths += result["numberOfDeaths"]
+            
+            if totalDeaths > 0:
+                dispatcher.utter_message(f"Total fatalities(s) reported: {totalDeaths}")
+            else:
+                dispatcher.utter_message(f"No fatalities reported.")
 
-        totalDeaths = 0
-        for result in results:
-            totalDeaths += result["numberOfDeaths"]
-        
-        if totalDeaths > 0:
-            dispatcher.utter_message(f"Total fatalities(s) reported: {totalDeaths}")
-        else:
-            dispatcher.utter_message(f"No fatalities reported.")
+            componentDict = {}
+            for result in results:
+                components = result["components"]
+                component_list = components.split(",")
+                for cmp in component_list:
+                    if cmp.strip() in componentDict:
+                        componentDict[cmp.strip()] += 1
+                    else:
+                        componentDict[cmp.strip()] = 1
+            
+            if (len(componentDict) > 0):
+                max_key = max(componentDict, key=componentDict.get)
+                max_value = max(componentDict.values())
+                dispatcher.utter_message (f"Component {max_key} reported {max_value} time(s) in the complaints.")
+                componentDict.pop(max_key, None)
+            
+            if (len(componentDict) > 0):
+                max_key = max(componentDict, key=componentDict.get)
+                max_value = max(componentDict.values())
+                dispatcher.utter_message (f"Component {max_key} reported {max_value} time(s) in the complaints.")
+                componentDict.pop(max_key, None)
+            
+            if (len(componentDict) > 0):
+                max_key = max(componentDict, key=componentDict.get)
+                max_value = max(componentDict.values())
+                dispatcher.utter_message (f"Component {max_key} reported {max_value} time(s) in the complaints.")
+                componentDict.pop(max_key, None)
 
-        componentDict = {}
-        for result in results:
-            components = result["components"]
-            component_list = components.split(",")
-            for cmp in component_list:
-                if cmp.strip() in componentDict:
-                    componentDict[cmp.strip()] += 1
-                else:
-                    componentDict[cmp.strip()] = 1
-        
-        if (len(componentDict) > 0):
-            max_key = max(componentDict, key=componentDict.get)
-            max_value = max(componentDict.values())
-            dispatcher.utter_message (f"Component {max_key} reported {max_value} time(s) in the complaints.")
-            componentDict.pop(max_key, None)
-        
-        if (len(componentDict) > 0):
-            max_key = max(componentDict, key=componentDict.get)
-            max_value = max(componentDict.values())
-            dispatcher.utter_message (f"Component {max_key} reported {max_value} time(s) in the complaints.")
-            componentDict.pop(max_key, None)
-        
-        if (len(componentDict) > 0):
-            max_key = max(componentDict, key=componentDict.get)
-            max_value = max(componentDict.values())
-            dispatcher.utter_message (f"Component {max_key} reported {max_value} time(s) in the complaints.")
-            componentDict.pop(max_key, None)
+            if crash_count>0:
+                dispatcher.utter_message("---")
+                dispatcher.utter_message("* Following is a sample crash related complaint *")
+                dispatcher.utter_message(list_summary_crash[0])
 
-        if crash_count>0:
+            if fire_count>0:
+                dispatcher.utter_message("---")
+                dispatcher.utter_message("* Following is a sample fire related complaint *")
+                dispatcher.utter_message(list_summary_fire[0])
+
             dispatcher.utter_message("---")
-            dispatcher.utter_message("* Following is a sample crash related complaint *")
-            dispatcher.utter_message(list_summary_crash[0])
 
-        if fire_count>0:
-            dispatcher.utter_message("---")
-            dispatcher.utter_message("* Following is a sample fire related complaint *")
-            dispatcher.utter_message(list_summary_fire[0])
-
-        dispatcher.utter_message("---")
-
-        if recall_count > 0:
+        if (infoType == "recalls" and recall_count > 0):
             dispatcher.utter_message("* Following is a sample recall campaign *")
             results_recall = recall_response.json()['Results']
-            #for result in results_recall:
-            result = results_recall[0]
+            result = results_recall[0] #checking only the first recall campaign
             recall_num = result["NHTSACampaignNumber"]
             recall_cmp = result["Component"]
             recall_summary = result["Summary"]
@@ -341,6 +374,9 @@ class ActionMoreResults(Action):
             dispatcher.utter_message(f"Recall Summary: {recall_summary}")     
             dispatcher.utter_message(f"Recall Consequence: {recall_consequence}")
             dispatcher.utter_message("---")  
+        
+        if (infoType == "ratings" or infoType == "vin"):
+            dispatcher.utter_message(f"No more results available for ratings or vin.")
 
         return [AllSlotsReset()]
 
@@ -353,4 +389,91 @@ class ResetAllSlots(Action):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> List[Dict]:
+        return [AllSlotsReset()]
+
+class SetInfoTypeComplaints(Action):
+    def name(self) -> Text:
+        return "action_set_infotype_complaints"
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List[Dict]:
+        dispatcher.utter_message(f"OK. Let me get complaints data for you.")
+        return [SlotSet("InfoType", "complaints")]
+
+class SetInfoTypeRecalls(Action):
+    def name(self) -> Text:
+        return "action_set_infotype_recalls"
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List[Dict]:
+        dispatcher.utter_message(f"OK. Let me get recall info for you.")
+        return [SlotSet("InfoType", "recalls")]
+
+class SetInfoTypeRatings(Action):
+    def name(self) -> Text:
+        return "action_set_infotype_ratings"
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List[Dict]:
+        dispatcher.utter_message(f"OK. Let me get safety ratings for you.")
+        return [SlotSet("InfoType", "ratings")]        
+
+class SetInfoTypeVIN(Action):
+    def name(self) -> Text:
+        return "action_set_infotype_vin"
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List[Dict]:
+        dispatcher.utter_message(f"OK. Let me get VIN details for you.")
+        return [SlotSet("InfoType", "vin")]      
+
+class ValidateVinForm(FormValidationAction):
+    def name(self) -> Text:
+        return "validate_vin_form"
+
+    async def validate_VIN(
+        self,
+        value: Text,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> Dict[Text, Any]:
+        #Currently no validations are performed for VIN value
+        return {"VIN": value} 
+
+class ActionVINResults(Action):
+    def name(self) -> Text:
+        return "action_vin_results"
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List[Dict]:
+        vin = tracker.get_slot("VIN")
+
+        if vin == None:
+            dispatcher.utter_message(f"Please provide a valid VIN.")
+            return [AllSlotsReset()]
+
+        vin = vin.strip() 
+        vin_response = requests.get(f"https://vpic.nhtsa.dot.gov/api/vehicles/decodevin/{vin}?format=json" )
+        if vin_response.status_code == 200:
+            results = vin_response.json()['Results']
+            for result in results:
+                if (result["Value"] != "" and result["Value"] != None and result["Value"] != "Not Applicable"):
+                    dispatcher.utter_message(f"{result['Variable']} = {result['Value']}")
+
         return [AllSlotsReset()]

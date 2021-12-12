@@ -3,23 +3,31 @@ session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: false
 intents:
-- greet
-- next
+- showsafetyratings
 - inform
+- greet
+- showVINdetails
 - affirm
-- showcomplaints
+- showrecalls
+- next
 - functionalities
 - out_of_scope
 - goodbye
 - deny
 - bot_challenge
 - thankyou
+- showcomplaints
 - whatsnhtsa
 entities:
+- InfoType
 - Make
 - Model
 - ModelYear
+- VIN
 slots:
+  InfoType:
+    type: text
+    influence_conversation: false
   Make:
     type: any
     influence_conversation: false
@@ -32,18 +40,25 @@ slots:
   MoreDataAvailable:
     type: bool
     influence_conversation: true
+  VIN:
+    type: text
+    influence_conversation: false
 responses:
   utter_greet:
-  - text: |-
-      Hi! I am Autobot. I can answer your question regarding complaints filed with NHTSA. 
+  - text: 'Hi! I am Autobot. I can answer your question regarding complaints filed with NHTSA. '
   utter_menu:
-  - text: |-
-      What do you want to do next?
+  - text: What do you want to do next?
     buttons:
     - title: Show complaints data
-      payload: /showcomplaints
+      payload: /showcomplaints {{"InfoType":"complaints"}}
+    - title: Show recalls
+      payload: /showrecalls {{"InfoType":"recalls"}}
+    - title: Show safety ratings
+      payload: /showsafetyratings {{"InfoType":"ratings"}}
+    - title: Show VIN details
+      payload: /showVINdetails {{"InfoType":"vin"}}
     - title: What is NHTSA
-      payload: /whatsnhtsa  
+      payload: /whatsnhtsa
     - title: Not interested at this time
       payload: /deny
   utter_goodbye:
@@ -52,6 +67,8 @@ responses:
   - text: I am a bot, powered by Rasa.
   utter_ask_ModelYear:
   - text: Please specify the model year of the vehicle (e.g. 2017)
+  utter_ask_VIN:
+  - text: Please type the VIN of the vehicle (e.g. 1N4AL2AP8AN490703)
   utter_no_worries:
   - text: No problem :)
   utter_ask_continue:
@@ -66,6 +83,9 @@ responses:
       You can ask me questions like:
        - What is NHTSA?
        - Tell me about some safety issues reported to NHTSA
+       - I want to know about recalls reported to NHTSA
+       - I would like to check how safe is my vehicle
+       - Decode my VIN
   utter_ask_more:
   - text: Do you want to see more details?
     buttons:
@@ -80,7 +100,12 @@ responses:
 actions:
 - action_more_results
 - action_reset_allslots
+- action_set_infotype_complaints
+- action_set_infotype_ratings
+- action_set_infotype_recalls
+- action_set_infotype_vin
 - action_submit_results
+- action_vin_results
 - utter_ask_continue
 - utter_ask_more
 - utter_functionality
@@ -88,15 +113,21 @@ actions:
 - utter_menu
 - utter_nhtsa
 - validate_nhtsa_form
-
+- validate_vin_form
 forms:
   nhtsa_form:
-    ModelYear:
-    - entity: ModelYear
-      type: from_text
-    Make:
-    - entity: Make
-      type: from_text
-    Model:
-    - entity: Model
-      type: from_text
+    required_slots:
+      ModelYear:
+      - entity: ModelYear
+        type: from_text
+      Make:
+      - entity: Make
+        type: from_text
+      Model:
+      - entity: Model
+        type: from_text
+  vin_form:
+    required_slots:
+      VIN:
+      - entity: VIN
+        type: from_text

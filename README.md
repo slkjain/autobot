@@ -1,6 +1,5 @@
 # Autobot - An Auto Safety Chatbot built using RASA and NHTSA APIs
-Autobot is an intelligent chatbot that provides information about automotive safety complaints and recall campaigns in the United States. Autobot code is compatible with Rasa Open Source version 2.8.0. Rasa is a popular open source framework for building chatbots. 
-Autobot uses [NHTSA APIs](https://medium.com/@slkjain/exploring-public-apis-from-nhtsa-81cb7416e0fc) to query complaints and recall data based on Model Year, Make and Model. 
+Autobot is an intelligent chatbot that provides information about automotive safety complaints, recall campaigns, safety ratings and VIN decoding for vehicles in the United States. Autobot code is compatible with Rasa Open Source version 2.8.0. Rasa is a popular open source framework for building chatbots. Autobot uses [NHTSA APIs](https://medium.com/@slkjain/exploring-public-apis-from-nhtsa-81cb7416e0fc) to query complaints, recall, ratings and vin data. 
 
 # Building and Running Autobot
 Following are the build instructions for Windows. The process should be similar in other environments. 
