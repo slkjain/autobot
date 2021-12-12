@@ -41,7 +41,7 @@ Again, the user can either select an option or type manually. Selecting model as
 
 <img src="https://slkjain.github.io/autobot/img/7-Show_Summary1.JPG" alt="Show summary" width="200"/>
 
-For 2018 Nissan Altima, there exist 140 complaints and 2 recalls in NHTSA database. All of these details are queried at run time using [NHTSA Public APIs](https://medium.com/@slkjain/exploring-public-apis-from-nhtsa-81cb7416e0fc).
+For 2018 Nissan Altima, there exist 140 complaints in NHTSA database. All of these details are queried at run time using [NHTSA Public APIs](https://medium.com/@slkjain/exploring-public-apis-from-nhtsa-81cb7416e0fc).
 
 At this stage if the user wants to see more details, they can select YES. Once the user opts for more details, complaint counts related to crash and fire are shown. Total number of injuries and fatalities are also shown. The Autobot then lists top three components responsible for these complaints. A sample crash related and a fire related complaint text is shown.
 
