@@ -13,7 +13,7 @@ The bot can provide information about vehicle complaints, recalls, safety rating
 5. Describe NHTSA 
 
 # Showing complaints data
-Webchat interface of Autobot is part of 'index.html'. Open 'index.html' in a web-browser.
+Autobot's Webchat interface can be opened in any web-browser.
 
 <img src="https://slkjain.github.io/autobot/img/1-Chatbot_Interface1.JPG" alt="Chatbot Initial Screen" width="600"/>
 
